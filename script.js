@@ -40,3 +40,108 @@ function createCells() {
     }
   }
 }
+
+function drawCell(cell) {
+  ctx.beginPath();
+  ctx.rect(cell.x, cell.y, width, width);
+  switch (cell.value){
+    case 0 : ctx.fillStyle = "#A9A9A9"; break;
+    case 2 : ctx.fillStyle = "#D2691E"; break;
+    case 4 : ctx.fillStyle = "#FF7F50"; break;
+    case 8 : ctx.fillStyle = "#ffbf00"; break;
+    case 16 : ctx.fillStyle = "#bfff00"; break;
+    case 32 : ctx.fillStyle = "#40ff00"; break;
+    case 64 : ctx.fillStyle = "#00bfff"; break;
+    case 128 : ctx.fillStyle = "#FF7F50"; break;
+    case 256 : ctx.fillStyle = "#0040ff"; break;
+    case 512 : ctx.fillStyle = "#ff0080"; break;
+    case 1024 : ctx.fillStyle = "#D2691E"; break;
+    case 2048 : ctx.fillStyle = "#FF7F50"; break;
+    case 4096 : ctx.fillStyle = "#ffbf00"; break;
+    default : ctx.fillStyle = "#ff0080";
+  }
+  ctx.fill();
+  if (cell.value) {
+    fontSize = width/2;
+    ctx.font = fontSize + "px Arial";
+    ctx.fillStyle = 'white';
+    ctx.textAlign = "center";
+    ctx.fillText(cell.value, cell.x + width / 2, cell.y + width / 2 + width/7);
+  }
+}
+function canvasClean() {
+  ctx.clearRect(0, 0, 500, 500);
+}
+document.onkeydown = function (event) {
+  if (!loss) {
+    if (event.keyCode == 38 || event.keyCode == 87) moveUp();
+    else if (event.keyCode == 39 || event.keyCode == 68) moveRight();
+    else if (event.keyCode == 40 || event.keyCode == 83) moveDown();
+    else if (event.keyCode == 37 || event.keyCode == 65) moveLeft();
+    scoreLabel.innerHTML = "Score : " + score;
+  }
+}
+function startGame() {
+  createCells();
+  drawAllCells();
+  pasteNewCell();
+  pasteNewCell();
+}
+function finishGame() {
+  canvas.style.opacity = "0.5";
+  loss = true;
+}
+function drawAllCells() {
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
+      drawCell(cells[i][j]);
+    }
+  }
+}
+function pasteNewCell() {
+  var countFree = 0;
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
+      if (!cells[i][j].value) {
+        countFree++;
+      }
+    }
+  }
+  if (!countFree){
+    finishGame();
+    return;
+  }
+  while (true) {
+    var row = Math.floor(Math.random() * size);
+    var coll = Math.floor(Math.random() * size);
+    if (!cells[row][coll].value) {
+      cells[row][coll].value = 2 * Math.ceil(Math.random() * 2);
+      drawAllCells();
+      return;
+    }
+  }
+}
+function moveRight () {
+  for (var i = 0; i < size; i++) {
+    for (var j = size - 2; j >= 0; j--) {
+      if (cells[i][j].value) {
+        var coll = j;
+        while (coll + 1 < size) {
+          if (!cells[i][coll + 1].value) {
+            cells[i][coll + 1].value = cells[i][coll].value;
+            cells[i][coll].value = 0;
+            coll++;
+          }
+          else if (cells[i][coll].value == cells[i][coll + 1].value) {
+            cells[i][coll + 1].value *= 2;
+            score +=  cells[i][coll + 1].value;
+            cells[i][coll].value = 0;
+            break;
+          }
+          else break;
+        }
+      }
+    }
+  }
+  pasteNewCell();
+}
