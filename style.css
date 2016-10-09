@@ -1,44 +1,240 @@
-body{
-    background-color: darkkhaki;
+html{
+    background: url(bg.jpg);
+    padding-left: 450px;
+    padding-right: 450px;
 }
 
-p{
-    color: antiquewhite;
-    font-size: 20px;
-}
-
-h1{
+body {
+    background-color: #faf8ef !important;
+    width: 100%;
     text-align: center;
 }
 
-#score{
+#container {
+    display: inline-block;
+    width: 501px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 100px;
+}
+
+#info {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -10px;
+    width: 501px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#game-name {
+    position: relative;
+    display: inline-block;
+    letter-spacing: 2px;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+}
+
+#game-name > h1 {
+    margin-bottom: 0;
+}
+
+#scores-container {
+    float: right;
+    text-align: right;
+    margin-top: 35px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#score-container {
+    position: relative;
+    display: inline-block;
+    border-radius: 3px;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    background: #bbada0;
+    line-height: 14px;
+    color: #eee4da;
     text-align: center;
 }
 
-.clear{
+#best-container {
+    position: relative;
+    display: inline-block;
+    border-radius: 3px;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    font-size: 14px;
+    background: #bbada0;
+    line-height: 14px;
+    color: #eee4da;
+    text-align: center;
+}
+
+#game-name > h1 {
+    font-size: 80px;
+    font-weight: bolder;
+    color: dimgrey;
+    font-family: monospace;
+
+}
+
+#score {
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 0;
+}
+
+#best-score {
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    color: white;
+    margin-bottom: 0;
+}
+
+#new-game {
+    display: block;
+    width: 501px;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 35px;
+}
+
+#new-game-button-div {
+    float: right;
+    text-align: right;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#button-container {
+    display: inline-block;
+    border-radius: 3px;
+    background: #8f7a66;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    padding-top: 10px;
+    padding-bottom: 6px;
+    padding-left: 22px;
+    padding-right: 22px;
+    cursor: pointer;
+}
+
+#new-game-button {
+    margin-bottom: 0;
+}
+
+.clear {
     clear: both;
 }
-#size-bloc{
-    margin-left: -50px;
-    padding-left: 50%;
+
+#size-bloc {
+    display: inline-block;
+    padding-left: 10px;
+    padding-right: 0;
+    text-align: left;
+    position: relative;
+    padding-top: 6px;
 }
 
-#size-title{
+#size-title {
     float: left;
-    margin-top: 0px;
+    margin-bottom: 0;
+    font-size: 25px;
+    font-weight: bold;
+    color: dimgrey;
 }
 
-#size{
+#size {
     width: 50px;
+    text-align: center;
     margin-left: 10px;
     border-radius: 3px;
+    float: left;
+    margin-right: 6px;
+    font-weight: bold;
+    font-size: 18px;
 }
 
-#canvas{
-    background-color: burlywood;
+#change-size {
+    padding-top: 8px;
+    background: #8f7a66;
+    padding-left: 13px;
+    padding-right: 13px;
 }
 
-#canvas-bloc{
-    margin-left: -250px;
-    padding-left: 50%;
+#canvas {
+    background-color: #bbada0;
+}
+
+#canvas-bloc {
+    display: block;
+    width: 501px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#instructions {
+    margin-top: 15px;
+    text-align: left;
+    font-size: 15px;
+}
+
+#howTo {
+    color: dimgray;
+}
+
+#task {
+    color: dimgray;
+}
+
+#turn-back {
+    color: dimgray;
+}
+
+@media (max-width: 1620px) {
+    html{
+        padding-left: 350px;
+        padding-right: 350px;
+    }
+}
+
+@media (max-width: 1370px) {
+    html{
+        padding-left: 250px;
+        padding-right: 250px;
+    }
+}
+
+@media (max-width: 1220px) {
+    html{
+        padding-left: 150px;
+        padding-right: 150px;
+    }
+}
+
+@media (max-width: 1000px) {
+    html{
+        padding-left: 80px;
+        padding-right: 80px;
+    }
+}
+
+@media (max-width: 800px) {
+    html{
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 }
