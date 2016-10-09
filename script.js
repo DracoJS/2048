@@ -6,13 +6,15 @@ var sizeInput = document.getElementById("size");
 var changeSize = document.getElementById("change-size");
 var scoreLabel = document.getElementById("score");
 
-var score = 0;
+var score;
 var size = 4;
 var width = canvas.width / size - 6;
 
 var cells = [];
 var fontSize;
-var loss = false;
+var loss;
+
+var states;
 
 startGame();
 
@@ -39,6 +41,28 @@ function createCells() {
       cells[i][j] = new cell(i, j);
     }
   }
+}
+
+function saveState() {
+  var state = [];
+  for (var i = 0; i < size; i++) {
+    state[i] = [];
+    for (var j = 0; j < size; j++) {
+      state[i][j] = cells[i][j].value;
+    }
+  }
+  states.push({ score: score, values: state });
+}
+
+function undo() {
+  var state = (states.length > 1 ? states.pop() : states[0]);
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
+      cells[i][j].value = state.values[i][j];
+    }
+  }
+  score = state.score;
+  drawAllCells();
 }
 
 function drawCell(cell) {
@@ -78,14 +102,21 @@ document.onkeydown = function (event) {
     else if (event.keyCode == 39 || event.keyCode == 68) moveRight();
     else if (event.keyCode == 40 || event.keyCode == 83) moveDown();
     else if (event.keyCode == 37 || event.keyCode == 65) moveLeft();
-    scoreLabel.innerHTML = "Score : " + score;
+    else if (event.keyCode == 90) undo();
   }
 }
 function startGame() {
+  score = 0;
+  loss = false;
+  canvas.style.opacity = "1";
+  
   createCells();
   drawAllCells();
   pasteNewCell();
   pasteNewCell();
+
+  states = [];
+  saveState();
 }
 function finishGame() {
   canvas.style.opacity = "0.5";
@@ -97,6 +128,7 @@ function drawAllCells() {
       drawCell(cells[i][j]);
     }
   }
+  scoreLabel.innerHTML = "Score : " + score;
 }
 function pasteNewCell() {
   var countFree = 0;
@@ -122,6 +154,7 @@ function pasteNewCell() {
   }
 }
 function moveRight () {
+  saveState();
   for (var i = 0; i < size; i++) {
     for (var j = size - 2; j >= 0; j--) {
       if (cells[i][j].value) {
@@ -147,6 +180,7 @@ function moveRight () {
 }
 
 function moveLeft() {
+  saveState();
   for (var i = 0; i < size; i++) {
     for (var j = 1; j < size; j++) {
       if (cells[i][j].value) {
@@ -172,6 +206,7 @@ function moveLeft() {
 }
 
 function moveUp() {
+  saveState();
   for (var j = 0; j < size; j++) {
     for (var i = 1; i < size; i++) {
       if (cells[i][j].value) {
@@ -197,6 +232,7 @@ function moveUp() {
 }
 
 function moveDown() {
+  saveState();
   for (var j = 0; j < size; j++) {
     for (var i = size - 2; i >= 0; i--) {
       if (cells[i][j].value) {
