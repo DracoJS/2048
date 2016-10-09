@@ -9,6 +9,7 @@ var scoreLabel = document.getElementById("score");
 var score;
 var size = 4;
 var width = canvas.width / size - 6;
+var undos;
 
 var cells = [];
 var fontSize;
@@ -51,17 +52,23 @@ function saveState() {
       state[i][j] = cells[i][j].value;
     }
   }
+  while (states.length >= undos) {
+    states.shift();
+  }
   states.push({ score: score, values: state });
 }
 
 function undo() {
-  var state = (states.length > 1 ? states.pop() : states[0]);
+  if (undos == 0 || states.length == 0)
+    return;
+  var state = states.pop();
   for (var i = 0; i < size; i++) {
     for (var j = 0; j < size; j++) {
       cells[i][j].value = state.values[i][j];
     }
   }
   score = state.score;
+  undos--;
   drawAllCells();
 }
 
@@ -116,7 +123,7 @@ function startGame() {
   pasteNewCell();
 
   states = [];
-  saveState();
+  undos = 6;
 }
 function finishGame() {
   canvas.style.opacity = "0.5";
