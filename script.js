@@ -145,3 +145,78 @@ function moveRight () {
   }
   pasteNewCell();
 }
+
+function moveLeft() {
+  for (var i = 0; i < size; i++) {
+    for (var j = 1; j < size; j++) {
+      if (cells[i][j].value) {
+        var coll = j;
+        while (coll - 1 >= 0) {
+          if (!cells[i][coll - 1].value) {
+            cells[i][coll - 1].value = cells[i][coll].value;
+            cells[i][coll].value = 0;
+            coll--;
+          }
+          else if (cells[i][coll].value == cells[i][coll - 1].value) {
+            cells[i][coll - 1].value *= 2;
+            score +=   cells[i][coll - 1].value;
+            cells[i][coll].value = 0;
+            break;
+          }
+          else break;
+        }
+      }
+    }
+  }
+  pasteNewCell();
+}
+
+function moveUp() {
+  for (var j = 0; j < size; j++) {
+    for (var i = 1; i < size; i++) {
+      if (cells[i][j].value) {
+        var row = i;
+        while (row > 0) {
+          if (!cells[row - 1][j].value) {
+            cells[row - 1][j].value = cells[row][j].value;
+            cells[row][j].value = 0;
+            row--;
+          }
+          else if (cells[row][j].value == cells[row - 1][j].value) {
+            cells[row - 1][j].value *= 2;
+            score +=  cells[row - 1][j].value;
+            cells[row][j].value = 0;
+            break;
+          }
+          else break;
+        }
+      }
+    }
+  }
+  pasteNewCell();
+}
+
+function moveDown() {
+  for (var j = 0; j < size; j++) {
+    for (var i = size - 2; i >= 0; i--) {
+      if (cells[i][j].value) {
+        var row = i;
+        while (row + 1 < size) {
+          if (!cells[row + 1][j].value) {
+            cells[row + 1][j].value = cells[row][j].value;
+            cells[row][j].value = 0;
+            row++;
+          }
+          else if (cells[row][j].value == cells[row + 1][j].value) {
+            cells[row + 1][j].value *= 2;
+            score +=  cells[row + 1][j].value;
+            cells[row][j].value = 0;
+            break;
+          }
+          else break;
+        }
+      }
+    }
+  }
+  pasteNewCell();
+}
