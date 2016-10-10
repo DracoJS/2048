@@ -24,7 +24,6 @@ var canRight = true;
 var canUp = true;
 var canDown = true;
 var end = false;
-var disable = false;
 var str = '';
 var strPosition = 0;
 
@@ -41,7 +40,6 @@ newGame.onclick = function () {
   canRight = true;
   canUp = true;
   canDown = true;
-  disable = false;
 }
 
 changeSize.onclick = function () {
@@ -61,7 +59,6 @@ changeSize.onclick = function () {
     canRight = true;
     canUp = true;
     canDown = true;
-    disable = false;
   }
 }
 
@@ -204,16 +201,13 @@ function finishGame() {
         ctx.fillText(str, strPosition, strPosition - size * 30);
         for (let score = 0; score < scoreArray.length; score++) {
             if (score == 0 && scoreArray[0]) {
-                ctx.fillText('Best', strPosition - size * 30, strPosition - size * 9);
-                ctx.fillText('' + scoreArray[score], strPosition, strPosition - size * 9);
+                ctx.fillText('Best      ' + scoreArray[score], strPosition, strPosition - size * 9);
             }
             if (score == 1 && scoreArray[1]) {
-                ctx.fillText('Second', strPosition - size * 20, strPosition + size * 7);
-                ctx.fillText('' + scoreArray[score], strPosition + size * 20, strPosition + size * 7);
+                ctx.fillText('Second    ' + scoreArray[score], strPosition, strPosition + size * 7);
             }
             if (score == 2 && scoreArray[2]) {
-                ctx.fillText('Third', strPosition - size * 27, strPosition + size * 23);
-                ctx.fillText('' + scoreArray[score], strPosition + size * 7, strPosition + size * 23);
+                ctx.fillText('Third     ' + scoreArray[score], strPosition, strPosition + size * 23);
             }
         }
 
