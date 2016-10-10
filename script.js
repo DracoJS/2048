@@ -15,6 +15,10 @@ var states;
 
 var cells = [];
 var fontSize;
+var canLeft = true;
+var canRight = true;
+var canUp = true;
+var canDown = true;
 var loss = false;
 
 startGame();
@@ -26,6 +30,10 @@ newGame.onclick = function () {
   canvas.style.opacity = "1";
   score = 0;
   scoreLabel.innerHTML = score;
+  canLeft = true;
+  canRight = true;
+  canUp = true;
+  canDown = true;
 }
 
 changeSize.onclick = function () {
@@ -39,6 +47,10 @@ changeSize.onclick = function () {
     canvas.style.opacity = "1";
     score = 0;
     scoreLabel.innerHTML = score;
+    canLeft = true;
+    canRight = true;
+    canUp = true;
+    canDown = true;
   }
 }
 
@@ -168,7 +180,10 @@ function pasteNewCell() {
     }
   }
   if (!countFree){
-    finishGame();
+    if(canDown==false && canUp==false && canRight==false && canLeft==false) {
+      finishGame();
+    }
+
     return;
   }
 
@@ -196,14 +211,16 @@ function moveRight () {
             cells[i][coll + 1].value = cells[i][coll].value;
             cells[i][coll].value = 0;
             coll++;
+            canRight = true;
           }
           else if (cells[i][coll].value == cells[i][coll + 1].value) {
             cells[i][coll + 1].value *= 2;
             score +=  cells[i][coll + 1].value;
             cells[i][coll].value = 0;
+            canRight = true;
             break;
           }
-          else break;
+          else  canRight = false; break;
         }
       }
     }
@@ -222,14 +239,16 @@ function moveLeft() {
             cells[i][coll - 1].value = cells[i][coll].value;
             cells[i][coll].value = 0;
             coll--;
+            canLeft = true;
           }
           else if (cells[i][coll].value == cells[i][coll - 1].value) {
             cells[i][coll - 1].value *= 2;
             score +=   cells[i][coll - 1].value;
             cells[i][coll].value = 0;
+            canLeft = true;
             break;
           }
-          else break;
+          else canLeft = false; break;
         }
       }
     }
@@ -248,14 +267,16 @@ function moveUp() {
             cells[row - 1][j].value = cells[row][j].value;
             cells[row][j].value = 0;
             row--;
+            canUp=true;
           }
           else if (cells[row][j].value == cells[row - 1][j].value) {
             cells[row - 1][j].value *= 2;
             score +=  cells[row - 1][j].value;
             cells[row][j].value = 0;
+            canUp=true;
             break;
           }
-          else break;
+          else canUp=false; break;
         }
       }
     }
@@ -274,14 +295,16 @@ function moveDown() {
             cells[row + 1][j].value = cells[row][j].value;
             cells[row][j].value = 0;
             row++;
+            canDown=true;
           }
           else if (cells[row][j].value == cells[row + 1][j].value) {
             cells[row + 1][j].value *= 2;
             score +=  cells[row + 1][j].value;
             cells[row][j].value = 0;
+            canDown=true;
             break;
           }
-          else break;
+          else canDown=false; break;
         }
       }
     }
