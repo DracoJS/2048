@@ -10,6 +10,8 @@ var scoreLabel = document.getElementById("score");
 var score = 0;
 var size = 4;
 var width = canvas.width / size - 6;
+var undos;
+var states;
 
 var cells = [];
 var fontSize;
@@ -53,6 +55,35 @@ function createCells() {
       cells[i][j] = new cell(i, j);
     }
   }
+}
+
+function saveState() {
+  var state = [];
+  for (var i = 0; i < size; i++) {
+    state[i] = [];
+    for (var j = 0; j < size; j++) {
+      state[i][j] = cells[i][j].value;
+    }
+  }
+  while (states.length >= undos) {
+    states.shift();
+  }
+  states.push({ score: score, values: state });
+}
+
+function undo() {
+  if (undos == 0 || states.length == 0)
+    return;
+  var state = states.pop();
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
+      cells[i][j].value = state.values[i][j];
+    }
+  }
+  score = state.score;
+  undos--;
+  canvasClean();
+  drawAllCells();
 }
 
 function drawCell(cell) {
@@ -100,6 +131,7 @@ document.onkeydown = function (event) {
     else if (event.keyCode == 39 || event.keyCode == 68) moveRight();
     else if (event.keyCode == 40 || event.keyCode == 83) moveDown();
     else if (event.keyCode == 37 || event.keyCode == 65) moveLeft();
+    else if (event.keyCode == 90) undo();
     scoreLabel.innerHTML = score;
   }
 }
@@ -109,6 +141,8 @@ function startGame() {
   drawAllCells();
   pasteNewCell();
   pasteNewCell();
+  undos = 6;
+  states = [];
 }
 
 function finishGame() {
@@ -152,6 +186,7 @@ function pasteNewCell() {
 }
 
 function moveRight () {
+  saveState();
   for (var i = 0; i < size; i++) {
     for (var j = size - 2; j >= 0; j--) {
       if (cells[i][j].value) {
@@ -177,6 +212,7 @@ function moveRight () {
 }
 
 function moveLeft() {
+  saveState();
   for (var i = 0; i < size; i++) {
     for (var j = 1; j < size; j++) {
       if (cells[i][j].value) {
@@ -202,6 +238,7 @@ function moveLeft() {
 }
 
 function moveUp() {
+  saveState();
   for (var j = 0; j < size; j++) {
     for (var i = 1; i < size; i++) {
       if (cells[i][j].value) {
@@ -227,6 +264,7 @@ function moveUp() {
 }
 
 function moveDown() {
+  saveState();
   for (var j = 0; j < size; j++) {
     for (var i = size - 2; i >= 0; i--) {
       if (cells[i][j].value) {
