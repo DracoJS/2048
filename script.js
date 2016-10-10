@@ -58,6 +58,8 @@ function createCells() {
 }
 
 function saveState() {
+  if (undos == 0)
+    return;
   var state = [];
   for (var i = 0; i < size; i++) {
     state[i] = [];
