@@ -250,8 +250,6 @@ function moveLeft() {
         while (coll - 1 >= 0) {
           if (!cells[i][coll - 1].value) {
             cells[i][coll - 1].value = cells[i][coll].value;
-            if(score >= bestScore)
-              bestScore = score;
             cells[i][coll].value = 0;
             coll--;
             canLeft = true;
@@ -259,6 +257,8 @@ function moveLeft() {
           else if (cells[i][coll].value == cells[i][coll - 1].value) {
             cells[i][coll - 1].value *= 2;
             score +=   cells[i][coll - 1].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[i][coll].value = 0;
             canLeft = true;
             break;
