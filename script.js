@@ -6,13 +6,22 @@ var sizeInput = document.getElementById("size");
 var changeSize = document.getElementById("change-size");
 var newGame = document.getElementById("button-container");
 var scoreLabel = document.getElementById("score");
+var bestScoreLabel = document.getElementById("best-score");
+var undosLabel = document.getElementById("undos");
 
 var score = 0;
+var bestScore = 0;
 var size = 4;
 var width = canvas.width / size - 6;
+var undos;
+var states;
 
 var cells = [];
 var fontSize;
+var canLeft = true;
+var canRight = true;
+var canUp = true;
+var canDown = true;
 var loss = false;
 
 startGame();
@@ -24,6 +33,10 @@ newGame.onclick = function () {
   canvas.style.opacity = "1";
   score = 0;
   scoreLabel.innerHTML = score;
+  canLeft = true;
+  canRight = true;
+  canUp = true;
+  canDown = true;
 }
 
 changeSize.onclick = function () {
@@ -37,6 +50,12 @@ changeSize.onclick = function () {
     canvas.style.opacity = "1";
     score = 0;
     scoreLabel.innerHTML = score;
+    if(score > bestScore)
+      bestScore = score;
+    canLeft = true;
+    canRight = true;
+    canUp = true;
+    canDown = true;
   }
 }
 
@@ -53,6 +72,44 @@ function createCells() {
       cells[i][j] = new cell(i, j);
     }
   }
+}
+
+function initUndos() {
+  undos = 6;
+  undosLabel.innerText = undos;
+  states = [];
+}
+
+function saveState() {
+  if (undos == 0)
+    return;
+  var state = [];
+  for (var i = 0; i < size; i++) {
+    state[i] = [];
+    for (var j = 0; j < size; j++) {
+      state[i][j] = cells[i][j].value;
+    }
+  }
+  while (states.length >= undos) {
+    states.shift();
+  }
+  states.push({ score: score, values: state });
+}
+
+function undo() {
+  if (undos == 0 || states.length == 0)
+    return;
+  var state = states.pop();
+  for (var i = 0; i < size; i++) {
+    for (var j = 0; j < size; j++) {
+      cells[i][j].value = state.values[i][j];
+    }
+  }
+  score = state.score;
+  undos--;
+  undosLabel.innerText = undos;
+  canvasClean();
+  drawAllCells();
 }
 
 function drawCell(cell) {
@@ -94,13 +151,21 @@ function canvasClean() {
   ctx.clearRect(0, 0, 500, 500);
 }
 
+window.addEventListener("keydown", function(e) {
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1){
+      e.preventDefault();
+    }
+}, false);
+
 document.onkeydown = function (event) {
   if (!loss) {
     if (event.keyCode == 38 || event.keyCode == 87) moveUp();
     else if (event.keyCode == 39 || event.keyCode == 68) moveRight();
     else if (event.keyCode == 40 || event.keyCode == 83) moveDown();
     else if (event.keyCode == 37 || event.keyCode == 65) moveLeft();
+    else if (event.keyCode == 90) undo();
     scoreLabel.innerHTML = score;
+    bestScoreLabel.innerHTML = bestScore;
   }
 }
 
@@ -109,6 +174,7 @@ function startGame() {
   drawAllCells();
   pasteNewCell();
   pasteNewCell();
+  initUndos();
 }
 
 function finishGame() {
@@ -134,7 +200,10 @@ function pasteNewCell() {
     }
   }
   if (!countFree){
-    finishGame();
+    if(canDown==false && canUp==false && canRight==false && canLeft==false) {
+      finishGame();
+    }
+
     return;
   }
 
@@ -152,6 +221,7 @@ function pasteNewCell() {
 }
 
 function moveRight () {
+  saveState();
   for (var i = 0; i < size; i++) {
     for (var j = size - 2; j >= 0; j--) {
       if (cells[i][j].value) {
@@ -161,14 +231,18 @@ function moveRight () {
             cells[i][coll + 1].value = cells[i][coll].value;
             cells[i][coll].value = 0;
             coll++;
+            canRight = true;
           }
           else if (cells[i][coll].value == cells[i][coll + 1].value) {
             cells[i][coll + 1].value *= 2;
             score +=  cells[i][coll + 1].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[i][coll].value = 0;
+            canRight = true;
             break;
           }
-          else break;
+          else  canRight = false; break;
         }
       }
     }
@@ -177,6 +251,7 @@ function moveRight () {
 }
 
 function moveLeft() {
+  saveState();
   for (var i = 0; i < size; i++) {
     for (var j = 1; j < size; j++) {
       if (cells[i][j].value) {
@@ -186,14 +261,18 @@ function moveLeft() {
             cells[i][coll - 1].value = cells[i][coll].value;
             cells[i][coll].value = 0;
             coll--;
+            canLeft = true;
           }
           else if (cells[i][coll].value == cells[i][coll - 1].value) {
             cells[i][coll - 1].value *= 2;
             score +=   cells[i][coll - 1].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[i][coll].value = 0;
+            canLeft = true;
             break;
           }
-          else break;
+          else canLeft = false; break;
         }
       }
     }
@@ -202,6 +281,7 @@ function moveLeft() {
 }
 
 function moveUp() {
+  saveState();
   for (var j = 0; j < size; j++) {
     for (var i = 1; i < size; i++) {
       if (cells[i][j].value) {
@@ -211,14 +291,18 @@ function moveUp() {
             cells[row - 1][j].value = cells[row][j].value;
             cells[row][j].value = 0;
             row--;
+            canUp=true;
           }
           else if (cells[row][j].value == cells[row - 1][j].value) {
             cells[row - 1][j].value *= 2;
             score +=  cells[row - 1][j].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[row][j].value = 0;
+            canUp=true;
             break;
           }
-          else break;
+          else canUp=false; break;
         }
       }
     }
@@ -227,6 +311,7 @@ function moveUp() {
 }
 
 function moveDown() {
+  saveState();
   for (var j = 0; j < size; j++) {
     for (var i = size - 2; i >= 0; i--) {
       if (cells[i][j].value) {
@@ -236,14 +321,18 @@ function moveDown() {
             cells[row + 1][j].value = cells[row][j].value;
             cells[row][j].value = 0;
             row++;
+            canDown=true;
           }
           else if (cells[row][j].value == cells[row + 1][j].value) {
             cells[row + 1][j].value *= 2;
             score +=  cells[row + 1][j].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[row][j].value = 0;
+            canDown=true;
             break;
           }
-          else break;
+          else canDown=false; break;
         }
       }
     }
