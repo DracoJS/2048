@@ -6,8 +6,10 @@ var sizeInput = document.getElementById("size");
 var changeSize = document.getElementById("change-size");
 var newGame = document.getElementById("button-container");
 var scoreLabel = document.getElementById("score");
+var bestScoreLabel = document.getElementById("best-score");
 
 var score = 0;
+var bestScore = 0;
 var size = 4;
 var width = canvas.width / size - 6;
 var undos;
@@ -47,6 +49,8 @@ changeSize.onclick = function () {
     canvas.style.opacity = "1";
     score = 0;
     scoreLabel.innerHTML = score;
+    if(score > bestScore)
+      bestScore = score;
     canLeft = true;
     canRight = true;
     canUp = true;
@@ -151,6 +155,7 @@ document.onkeydown = function (event) {
     else if (event.keyCode == 37 || event.keyCode == 65) moveLeft();
     else if (event.keyCode == 90) undo();
     scoreLabel.innerHTML = score;
+    bestScoreLabel.innerHTML = bestScore;
   }
 }
 
@@ -222,6 +227,8 @@ function moveRight () {
           else if (cells[i][coll].value == cells[i][coll + 1].value) {
             cells[i][coll + 1].value *= 2;
             score +=  cells[i][coll + 1].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[i][coll].value = 0;
             canRight = true;
             break;
@@ -243,6 +250,8 @@ function moveLeft() {
         while (coll - 1 >= 0) {
           if (!cells[i][coll - 1].value) {
             cells[i][coll - 1].value = cells[i][coll].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[i][coll].value = 0;
             coll--;
             canLeft = true;
@@ -278,6 +287,8 @@ function moveUp() {
           else if (cells[row][j].value == cells[row - 1][j].value) {
             cells[row - 1][j].value *= 2;
             score +=  cells[row - 1][j].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[row][j].value = 0;
             canUp=true;
             break;
@@ -306,6 +317,8 @@ function moveDown() {
           else if (cells[row][j].value == cells[row + 1][j].value) {
             cells[row + 1][j].value *= 2;
             score +=  cells[row + 1][j].value;
+            if(score >= bestScore)
+              bestScore = score;
             cells[row][j].value = 0;
             canDown=true;
             break;
