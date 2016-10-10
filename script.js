@@ -137,6 +137,12 @@ function canvasClean() {
   ctx.clearRect(0, 0, 500, 500);
 }
 
+window.addEventListener("keydown", function(e) {
+    if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1){
+      e.preventDefault();
+    }
+}, false);
+
 document.onkeydown = function (event) {
   if (!loss) {
     if (event.keyCode == 38 || event.keyCode == 87) moveUp();
