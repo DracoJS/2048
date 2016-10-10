@@ -7,6 +7,7 @@ var changeSize = document.getElementById("change-size");
 var newGame = document.getElementById("button-container");
 var scoreLabel = document.getElementById("score");
 var bestScoreLabel = document.getElementById("best-score");
+var undosLabel = document.getElementById("undos");
 
 var score = 0;
 var bestScore = 0;
@@ -73,7 +74,15 @@ function createCells() {
   }
 }
 
+function initUndos() {
+  undos = 6;
+  undosLabel.innerText = undos;
+  states = [];
+}
+
 function saveState() {
+  if (undos == 0)
+    return;
   var state = [];
   for (var i = 0; i < size; i++) {
     state[i] = [];
@@ -98,6 +107,7 @@ function undo() {
   }
   score = state.score;
   undos--;
+  undosLabel.innerText = undos;
   canvasClean();
   drawAllCells();
 }
@@ -164,8 +174,7 @@ function startGame() {
   drawAllCells();
   pasteNewCell();
   pasteNewCell();
-  undos = 6;
-  states = [];
+  initUndos();
 }
 
 function finishGame() {
