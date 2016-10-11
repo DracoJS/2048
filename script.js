@@ -31,6 +31,7 @@ var strPosition = 0;
 
 startGame();
 
+
 newGame.onclick = function () {
   canvasClean();
   startGame();
@@ -42,6 +43,10 @@ newGame.onclick = function () {
   canRight = true;
   canUp = true;
   canDown = true;
+    let id="the-important-button";
+    var e = document.getElementById(id);
+    e.style.display = 'none';
+
 }
 
 changeSize.onclick = function () {
@@ -61,7 +66,36 @@ changeSize.onclick = function () {
     canRight = true;
     canUp = true;
     canDown = true;
+      let id="the-important-button";
+      var e = document.getElementById(id);
+      e.style.display = 'none';
+
   }
+}
+function showButton() {
+    let id="the-important-button";
+    var e = document.getElementById(id);
+    if (e.style.display !== 'none') {
+        e.style.display = 'none';
+    }
+    else {
+        e.style.display = 'block';
+    }
+}
+
+function  tryNewGame () {
+    canvasClean();
+    startGame();
+    end = false;
+    canvas.style.opacity = "1";
+    score = 0;
+    scoreLabel.innerHTML = score;
+    canLeft = true;
+    canRight = true;
+    canUp = true;
+    canDown = true;
+   showButton();
+
 }
 
 function cell(row, coll) {
@@ -240,16 +274,15 @@ function pasteNewCell() {
     }
   }
   if (!countFree){
-    if(canDown==false && canUp==false && canRight==false && canLeft==false) {
+    if((canDown==false && canRight==false) || (canDown==false && canLeft==false)||(canUp==false && canLeft==false)||(canUp==false &&canRight==false)) {
       end = true;
       strPosition = (width / 2) * size + 10;
       str = 'Game Over';
+        showButton();
       finishGame();
     }
-
     return;
   }
-
 
   while (true) {
     canvasClean();
@@ -265,6 +298,7 @@ function pasteNewCell() {
 
 function moveRight () {
     saveState();
+
     for (var i = 0; i < size; i++) {
         for (var j = size - 2; j >= 0; j--) {
             if (cells[i][j].value) {
@@ -275,6 +309,9 @@ function moveRight () {
                         cells[i][coll].value = 0;
                         coll++;
                         canRight = true;
+                        canLeft=true;
+                        canUp=true;
+                        canDown=true;
                     }
                     else if (cells[i][coll].value == cells[i][coll + 1].value) {
                         cells[i][coll + 1].value *= 2;
@@ -283,6 +320,9 @@ function moveRight () {
                             bestScore = score;
                         cells[i][coll].value = 0;
                         canRight = true;
+                        canLeft=true;
+                        canUp=true;
+                        canDown=true;
                         break;
                     }
                     else {
@@ -299,6 +339,8 @@ function moveRight () {
 
 function moveLeft() {
     saveState();
+
+
     for (var i = 0; i < size; i++) {
         for (var j = 1; j < size; j++) {
             if (cells[i][j].value) {
@@ -309,6 +351,9 @@ function moveLeft() {
                         cells[i][coll].value = 0;
                         coll--;
                         canLeft = true;
+                        canRight = true;
+                        canUp = true;
+                        canDown = true;
                     }
                     else if (cells[i][coll].value == cells[i][coll - 1].value) {
                         cells[i][coll - 1].value *= 2;
@@ -317,6 +362,9 @@ function moveLeft() {
                             bestScore = score;
                         cells[i][coll].value = 0;
                         canLeft = true;
+                        canRight = true;
+                        canUp = true;
+                        canDown = true;
                         break;
                     }
                     else {
@@ -333,6 +381,7 @@ function moveLeft() {
 
 function moveUp() {
     saveState();
+
     for (var j = 0; j < size; j++) {
         for (var i = 1; i < size; i++) {
             if (cells[i][j].value) {
@@ -343,6 +392,9 @@ function moveUp() {
                         cells[row][j].value = 0;
                         row--;
                         canUp = true;
+                        canLeft = true;
+                        canRight = true;
+                        canDown = true;
                     }
                     else if (cells[row][j].value == cells[row - 1][j].value) {
                         cells[row - 1][j].value *= 2;
@@ -351,6 +403,9 @@ function moveUp() {
                             bestScore = score;
                         cells[row][j].value = 0;
                         canUp = true;
+                        canLeft = true;
+                        canRight = true;
+                        canDown = true;
                         break;
                     }
                     else {
@@ -366,6 +421,8 @@ function moveUp() {
 }
 
 function moveDown() {
+
+
     saveState();
     for (var j = 0; j < size; j++) {
         for (var i = size - 2; i >= 0; i--) {
@@ -377,6 +434,9 @@ function moveDown() {
                         cells[row][j].value = 0;
                         row++;
                         canDown = true;
+                        canLeft = true;
+                        canRight = true;
+                        canUp = true;
                     }
                     else if (cells[row][j].value == cells[row + 1][j].value) {
                         cells[row + 1][j].value *= 2;
@@ -385,6 +445,9 @@ function moveDown() {
                             bestScore = score;
                         cells[row][j].value = 0;
                         canDown = true;
+                        canLeft = true;
+                        canRight = true;
+                        canUp = true;
                         break;
                     }
                     else{
