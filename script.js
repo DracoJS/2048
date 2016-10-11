@@ -285,8 +285,11 @@ function moveRight () {
                         canRight = true;
                         break;
                     }
-                    else  canRight = false;
-                    break;
+                    else {
+                        canRight = false;
+                        break;
+                    }
+
                 }
             }
         }
@@ -316,8 +319,11 @@ function moveLeft() {
                         canLeft = true;
                         break;
                     }
-                    else canLeft = false;
-                    break;
+                    else {
+                        canLeft = false;
+                        break;
+                    }
+
                 }
             }
         }
@@ -347,8 +353,11 @@ function moveUp() {
                         canUp = true;
                         break;
                     }
-                    else canUp = false;
-                    break;
+                    else {
+                        canUp = false;
+                        break;
+                    }
+
                 }
             }
         }
@@ -378,8 +387,11 @@ function moveDown() {
                         canDown = true;
                         break;
                     }
-                    else canDown = false;
-                    break;
+                    else{
+                        canDown = false;
+                        break;
+                    }
+
                 }
             }
         }
