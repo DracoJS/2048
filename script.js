@@ -10,12 +10,14 @@ var bestScoreLabel = document.getElementById("best-score");
 var undosLabel = document.getElementById("undos");
 
 var score = 0;
-var bestScore = 0;
+var bestScore = localStorage.getItem('scoreArrayBest') ? Number(localStorage.getItem('scoreArrayBest')) : 0;
+bestScoreLabel.innerHTML = bestScore;
+
 var size = 4;
 var width = canvas.width / size - 6;
 var undos;
 var states;
-var scoreArray = [];
+var scoreArray = localStorage.getItem('scoreArray') ? localStorage.getItem('scoreArray').split(',').map(Number) : [];
 
 var cells = [];
 var fontSize;
@@ -194,6 +196,12 @@ function finishGame() {
     scoreArray.push(score);
     scoreArray.sort((a, b) => b - a);
     console.log(scoreArray);
+    let sessionArray = scoreArray;
+    localStorage.setItem('scoreArray', sessionArray);
+    let best = sessionArray.shift();
+    localStorage.setItem('scoreArrayBest', best);
+    scoreArray.unshift(best);
+    console.log(scoreArray);
     canvas.style.opacity = "0.4";
     if (end) {
         ctx.fillStyle = 'black';
@@ -201,13 +209,13 @@ function finishGame() {
         ctx.fillText(str, strPosition, strPosition - size * 30);
         for (let score = 0; score < scoreArray.length; score++) {
             if (score == 0 && scoreArray[0]) {
-                ctx.fillText('Best      ' + scoreArray[score], strPosition, strPosition - size * 9);
+                ctx.fillText('Best  ' + scoreArray[score], strPosition, strPosition - size * 9);
             }
             if (score == 1 && scoreArray[1]) {
-                ctx.fillText('Second    ' + scoreArray[score], strPosition, strPosition + size * 7);
+                ctx.fillText('Second  ' + scoreArray[score], strPosition, strPosition + size * 7);
             }
             if (score == 2 && scoreArray[2]) {
-                ctx.fillText('Third     ' + scoreArray[score], strPosition, strPosition + size * 23);
+                ctx.fillText('Third  ' + scoreArray[score], strPosition, strPosition + size * 23);
             }
         }
 
