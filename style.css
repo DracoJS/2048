@@ -1,4 +1,4 @@
-html{
+html {
     background: url(bg.jpg);
     padding-left: 450px;
     padding-right: 450px;
@@ -117,10 +117,11 @@ body {
     padding-left: 0;
     padding-right: 0;
 }
-#the-important-button{
 
-    outline:0px;
-   border: 0px;
+#the-important-button {
+
+    outline: 0px;
+    border: 0px;
     background: #8f7a66;
     color: white;
     font-weight: bold;
@@ -226,35 +227,35 @@ body {
 }
 
 @media (max-width: 1620px) {
-    html{
+    html {
         padding-left: 350px;
         padding-right: 350px;
     }
 }
 
 @media (max-width: 1370px) {
-    html{
+    html {
         padding-left: 250px;
         padding-right: 250px;
     }
 }
 
 @media (max-width: 1220px) {
-    html{
+    html {
         padding-left: 150px;
         padding-right: 150px;
     }
 }
 
 @media (max-width: 1000px) {
-    html{
+    html {
         padding-left: 80px;
         padding-right: 80px;
     }
 }
 
 @media (max-width: 800px) {
-    html{
+    html {
         padding-left: 10px;
         padding-right: 10px;
     }
