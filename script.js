@@ -30,6 +30,43 @@ var str = '';
 var strPosition = 0;
 
 startGame();
+function drawButton() {
+    ctx.strokeStyle='#8f7a66';
+    ctx.lineCap='round';
+    ctx.lineWidth=40;
+    ctx.beginPath();
+    ctx.moveTo(151,420);
+    ctx.lineTo(351,420);
+    ctx.stroke();
+    ctx.fillStyle = 'white';
+    ctx.font = "24px monospace";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText("Try Again", 251, 420);
+    ctx.textBaseline = 'alphabetic';
+
+
+}
+
+canvas.addEventListener('click',mouseHandler);
+function mouseHandler(event) {
+
+    if(event.clientX>844 && event.clientX<1086){
+        if(event.clientY>575 && event.clientY<618){
+            canvasClean();
+            startGame();
+            end = false;
+            canvas.style.opacity = "1";
+            score = 0;
+            scoreLabel.innerHTML = score;
+            canLeft = true;
+            canRight = true;
+            canUp = true;
+            canDown = true;
+        }
+    }
+
+}
 
 
 newGame.onclick = function () {
@@ -43,9 +80,8 @@ newGame.onclick = function () {
   canRight = true;
   canUp = true;
   canDown = true;
-    let id="the-important-button";
-    var e = document.getElementById(id);
-    e.style.display = 'none';
+
+
 
 }
 
@@ -72,31 +108,9 @@ changeSize.onclick = function () {
 
   }
 }
-function showButton() {
-    let id="the-important-button";
-    var e = document.getElementById(id);
-    if (e.style.display !== 'none') {
-        e.style.display = 'none';
-    }
-    else {
-        e.style.display = 'block';
-    }
-}
 
-function  tryNewGame () {
-    canvasClean();
-    startGame();
-    end = false;
-    canvas.style.opacity = "1";
-    score = 0;
-    scoreLabel.innerHTML = score;
-    canLeft = true;
-    canRight = true;
-    canUp = true;
-    canDown = true;
-   showButton();
 
-}
+
 
 function cell(row, coll) {
   this.value = 0;
@@ -242,6 +256,7 @@ function finishGame() {
         ctx.textAlign = "center";
         ctx.fillText(str, strPosition, strPosition - size * 30);
         for (let score = 0; score < scoreArray.length; score++) {
+
             if (score == 0 && scoreArray[0]) {
                 ctx.fillText('Best  ' + scoreArray[score], strPosition, strPosition - size * 9);
             }
@@ -252,6 +267,9 @@ function finishGame() {
                 ctx.fillText('Third  ' + scoreArray[score], strPosition, strPosition + size * 23);
             }
         }
+        drawButton();
+        mouseHandler();
+
 
     }
 }
@@ -278,7 +296,7 @@ function pasteNewCell() {
       end = true;
       strPosition = (width / 2) * size + 10;
       str = 'Game Over';
-        showButton();
+
       finishGame();
     }
     return;
