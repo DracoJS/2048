@@ -221,7 +221,7 @@ document.onkeydown = function (event) {
     bestScoreLabel.innerHTML = bestScore;
     for (var i = 0; i < size; i++) {
         for (var j = 0; j < size; j++) {
-            if (cells[i][j].value == 2048) {
+            if (cells[i][j].value == 32) {
                 end = true;
                 strPosition = (width / 2) * size + 10;
                 str = 'You Win';
@@ -254,17 +254,17 @@ function finishGame() {
     if (end) {
         ctx.fillStyle = 'black';
         ctx.textAlign = "center";
-        ctx.fillText(str, strPosition, strPosition - size * 30);
+        ctx.fillText(str, strPosition, 120);
         for (let score = 0; score < scoreArray.length; score++) {
 
             if (score == 0 && scoreArray[0]) {
-                ctx.fillText('Best  ' + scoreArray[score], strPosition, strPosition - size * 9);
+                ctx.fillText('Best  ' + scoreArray[score], strPosition, 210);
             }
             if (score == 1 && scoreArray[1]) {
-                ctx.fillText('Second  ' + scoreArray[score], strPosition, strPosition + size * 7);
+                ctx.fillText('Second  ' + scoreArray[score], strPosition, 285);
             }
             if (score == 2 && scoreArray[2]) {
-                ctx.fillText('Third  ' + scoreArray[score], strPosition, strPosition + size * 23);
+                ctx.fillText('Third  ' + scoreArray[score], strPosition, 360);
             }
         }
         drawButton();
