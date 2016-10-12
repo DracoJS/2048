@@ -262,6 +262,8 @@ function startGame() {
 }
 
 function finishGame() {
+    clearInterval(timer);
+    timer = undefined;
     scoreArray.push(score);
     scoreArray.sort((a, b) => b - a);
     console.log(scoreArray);
